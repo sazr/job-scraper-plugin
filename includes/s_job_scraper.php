@@ -198,7 +198,7 @@ class S_Job_Scraper {
   }
 
   public static function post_run_scraper() {
-    if (!isset($_REQUEST['nonce']) || !wp_verify_nonce( $_REQUEST['nonce'], "sjs-nonce"))
+    if (!isset($_REQUEST['nonce']) || !wp_verify_nonce( $_REQUEST['nonce'], "sjs_run_scraper"))
       exit("No naughty business please");
     if (!is_user_logged_in())
       exit("User not logged in");
@@ -216,9 +216,6 @@ class S_Job_Scraper {
       $url = path_join(self::INDEED_URLS[0], '?' . http_build_query($qry));
       $res = file_get_contents($url);
       $json = json_decode($res, true);
-
-      error_log("^^^^^^^^^^^^^^^^RESPONSE:");
-      error_log(print_r($res, true));
 
       if (isset($json) && isset($json['results']) && count($json['results']) > 0 ) {
         foreach ($json['results'] as $job_data) {
